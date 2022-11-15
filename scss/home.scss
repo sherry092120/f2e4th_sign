@@ -22,7 +22,7 @@
         background-image: url("../img/banner_m.png");
     }
     .main{
-        padding: 220px 120px 50px;
+        padding: 220px 120px;
         @include flex-j(flex-end);
         @include m{
             @include flex-j(center);
@@ -55,7 +55,6 @@
                 margin-top: 23px;
                 margin-bottom: 93px;
                 color: #51A8BC;
-                
                 @include s{
                     margin-top: 10px;
                     margin-bottom: 0px;

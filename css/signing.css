@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .sample {
   transition: 4s all ease;
   -webkit-transition: 4s all ease;
@@ -17,6 +18,16 @@
   padding: 30px 15px;
   height: calc(100vh - 160px);
 }
+@media (max-width: 767px) {
+  #mainApp .main {
+    padding: 15px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main {
+    padding: 10px;
+  }
+}
 #mainApp .main .block {
   background-color: #FFFAF4;
   border-radius: 35px;
@@ -27,16 +38,38 @@
   height: 100%;
 }
 #mainApp .main .block .tab {
+  letter-spacing: 5px;
   font-size: 20px;
   line-height: 30px;
-  letter-spacing: 5px;
-  height: 50px;
   padding: 15px;
+  height: 60px;
   width: 50%;
   text-align: center;
   color: #51A8BC;
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .tab {
+    letter-spacing: 4px;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 18px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .tab {
+    letter-spacing: 3px;
+    font-size: 12px;
+    line-height: 12px;
+    padding: 9px;
+    height: 30px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
 }
 #mainApp .main .block .tab.active {
   color: #F9B471;
@@ -48,8 +81,322 @@
 #mainApp .main .block .tab-right.active {
   box-shadow: -8px 4px 4px rgba(238, 237, 232, 0.5);
 }
-#mainApp .main .block .canvas {
+#mainApp .main .block .upload, #mainApp .main .block .files, #mainApp .main .block .no-file {
   width: 100%;
   height: 100%;
   background-color: #FFFFFF;
+  color: #A5A39C;
+  height: calc(100% - 60px);
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .upload, #mainApp .main .block .files, #mainApp .main .block .no-file {
+    height: calc(100% - 30px);
+  }
+}
+#mainApp .main .block .upload {
+  padding: 50px;
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .upload {
+    padding: 10px;
+  }
+}
+#mainApp .main .block .upload .drop-zone {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  border: 1px dashed #A5A39C;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 36px;
+  letter-spacing: 6px;
+  cursor: pointer;
+  transition: 0.3s all ease;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .upload .drop-zone {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .upload .drop-zone {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+#mainApp .main .block .upload .drop-zone:hover {
+  background-color: #FFFAF4;
+}
+#mainApp .main .block .upload .drop-zone .text {
+  display: inline-block;
+}
+#mainApp .main .block .upload .drop-zone .icon-pdf {
+  width: 100%;
+  height: 144px;
+  margin: 40px 0;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .upload .drop-zone .icon-pdf {
+    margin: 20px 0;
+  }
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .upload .drop-zone .icon-pdf {
+    height: 100px;
+    margin: 14px 0;
+  }
+}
+#mainApp .main .block .no-file {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  line-height: 36px;
+  letter-spacing: 6px;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .no-file {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 4px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .no-file {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 3px;
+  }
+}
+#mainApp .main .block .files {
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  padding: 50px 33px;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files {
+    padding: 30px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files {
+    padding: 10px;
+  }
+}
+#mainApp .main .block .files .search {
+  width: 100%;
+  height: 60px;
+  border: 1px solid #A5A39C;
+  border-radius: 30px;
+  position: relative;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files .search {
+    height: 50px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .search {
+    height: 25px;
+  }
+}
+#mainApp .main .block .files .search input[name=search] {
+  font-size: 20px;
+  line-height: 24px;
+  height: 100%;
+  width: calc(100% - 45px);
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 18px 30px;
+  display: block;
+}
+#mainApp .main .block .files .search input[name=search]::-webkit-search-cancel-button {
+  display: none;
+}
+#mainApp .main .block .files .search input[name=search]::-ms-clear {
+  display: none;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files .search input[name=search] {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 15px 25px;
+    width: calc(100% - 36px);
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .search input[name=search] {
+    font-size: 12px;
+    line-height: 13px;
+    padding: 6px 10px;
+    width: calc(100% - 25px);
+  }
+}
+#mainApp .main .block .files .search ::-moz-placeholder { /* CSS 3 標準 */
+  color: #D9D9D9;
+}
+#mainApp .main .block .files .search :-ms-input-placeholder { /* CSS 3 標準 */
+  color: #D9D9D9;
+}
+#mainApp .main .block .files .search ::placeholder { /* CSS 3 標準 */
+  color: #D9D9D9;
+}
+#mainApp .main .block .files .search ::-webkit-input-placeholder { /* Chrome, Safari */
+  color: #D9D9D9;
+}
+#mainApp .main .block .files .search :-ms-input-placeholder { /* IE 10+ */
+  color: #D9D9D9;
+}
+#mainApp .main .block .files .search ::-moz-placeholder { /* Firefox 19+ */
+  color: #D9D9D9;
+  opacity: 1;
+}
+#mainApp .main .block .files .search .icon-search {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files .search .icon-search {
+    width: 22px;
+    height: 22px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .search .icon-search {
+    right: 10px;
+    width: 9px;
+    height: 9px;
+  }
+}
+#mainApp .main .block .files .text {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 4px;
+  margin: 30px 0 25px;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files .text {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 3.5px;
+    margin: 15px 0;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .text {
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 3px;
+    margin: 5px 0;
+  }
+}
+#mainApp .main .block .files .text-name {
+  width: 50%;
+  padding-left: 30px;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files .text-name {
+    padding-left: 25px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .text-name {
+    padding-left: 10px;
+  }
+}
+#mainApp .main .block .files .text-upload-time {
+  width: 25%;
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .text-upload-time {
+    width: 50%;
+  }
+}
+#mainApp .main .block .files .text-open-time {
+  width: 25%;
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .text-open-time {
+    display: none;
+  }
+}
+#mainApp .main .block .files .row {
+  width: 100%;
+  display: flex;
+  border-radius: 30px;
+  font-size: 20px;
+  line-height: 60px;
+  cursor: pointer;
+  transition: 0.3s all ease;
+}
+#mainApp .main .block .files .row:hover {
+  background-color: #F9F8F6;
+}
+@media (max-width: 991px) {
+  #mainApp .main .block .files .row {
+    font-size: 16px;
+  }
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files .row {
+    font-size: 14px;
+    line-height: 50px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .row {
+    font-size: 12px;
+    line-height: 25px;
+    border-radius: 12px;
+  }
+}
+#mainApp .main .block .files .row .name {
+  width: 50%;
+  padding-left: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  #mainApp .main .block .files .row .name {
+    padding-left: 25px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .row .name {
+    padding-left: 10px;
+  }
+}
+#mainApp .main .block .files .row .upload-time {
+  width: 25%;
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .row .upload-time {
+    width: 50%;
+  }
+}
+#mainApp .main .block .files .row .open-time {
+  width: 25%;
+}
+@media (max-width: 575px) {
+  #mainApp .main .block .files .row .open-time {
+    display: none;
+  }
+}
+#mainApp .main .block .files .row.active {
+  background-color: #FFFAF4;
+}
+#mainApp .main .block .files .row.active:hover {
+  background-color: #FFFAF4;
 }/*# sourceMappingURL=signing.css.map */

@@ -1,16 +1,16 @@
 @import './_var.scss';
 @import './_mixin.scss';
 
-/* common ___________________________________________________*/
-// @font-face {
-//     font-family: NotoSansCJK;
-//     src: url("../font/NotoSansMonoCJKtc-Regular.otf");
-//   }
+@font-face {
+    font-family: NotoSansCJK;
+    src: url("../font/NotoSansCJKtc-Regular.otf");
+  }
   
+/* common ___________________________________________________*/
 * {
     box-sizing: border-box;
     // font-family: 'Noto Sans TC', sans-serif;
-    // font-family: NotoSansCJK;
+    font-family: NotoSansCJK;
 }
 body{
     margin: 0;
@@ -58,6 +58,7 @@ img{
             .logo{
                 width: 100px;
                 height: 25px;
+                cursor: pointer;
                 @include s{
                     width: 60px;
                     height: 15px;
@@ -83,9 +84,11 @@ img{
                 // color: map-get($color, 's');
                 color: #51A8BC;
                 font-size: 16px;
+                cursor: pointer;
             }
             .disable{
                 color: #E2E1DD;
+                cursor: default;
             }
             @include s{
                 display: none;
@@ -95,7 +98,7 @@ img{
 }
 
 #mainApp{
-    max-width: 1920px;
+    // max-width: 1920px;
     margin: 0 auto;
     .main{
         margin-top: 60px;

@@ -32,10 +32,29 @@
     <main id="mainApp">
         <div class="main hasfooter">
             <div class="block">
-                <div class="tab tab-left active">上傳新文件</div>
-                <div class="tab tab-right">選擇已上傳文件</div>
-                <div class="canvas">
-                    <input type="file" name="upload" accept=".pdf" />
+                <div class="tab tab-left" :class="{'active':tab == 1}" @click="tab = 1">上傳新文件</div>
+                <div class="tab tab-right" :class="{'active':tab == 2}" @click="tab = 2">選擇已上傳文件</div>
+                <div v-if="tab == 1" class="upload">
+                    <div class="drop-zone">
+                        <span class="text">點擊此處上傳 或 直接拖曳檔案</span>
+                        <img src="./img/icon_document_pdf.png" class="icon-pdf">
+                        <span class="text">(限10MB以下PDF檔)</span>
+                    </div>
+                </div>
+                <div v-if="tab == 2 && files == false" class="no-file">尚未上傳任何文件!</div>
+                <div v-if="tab == 2 && files != false" class="files">
+                    <div class="search">
+                        <input type="search" name="search" placeholder="搜尋文件名稱">
+                        <img src="./img/icon_search.svg" class="icon-search">
+                    </div>
+                    <div class="text text-name">名稱</div>
+                    <div class="text text-upload-time">上傳時間</div>
+                    <div class="text text-open-time">上次開啟</div>
+                    <div class="row" v-for="(file,i) in files" :class="{'active': i+1 == fileIndex}" @click="choosefile(i+1)">
+                        <div class="info name">{{file[0]}}</div>
+                        <div class="info upload-time">{{file[1]}}</div>
+                        <div class="info open-time">{{file[2]}}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,15 +69,20 @@
         const mainApp = Vue.createApp({
             data(){
                 return{ 
-                    name: '123',
-                
+                    tab: 2,
+                    fileIndex: '',
+                    // files:[],
+                    files:[['.123.pdf','2022/10/31，23:45','---'],['.456.pdf','2022/10/31，23:45','2022/10/31，23:55']]
                 }
             },
             methods:{
-                
+                choosefile(index){
+                    this.fileIndex = index;
+                }
             },
             mounted(){
-                
+                // console.log(this.files)
+                // console.log(this.files == false)
             },
         })
         mainApp.mount('#mainApp');

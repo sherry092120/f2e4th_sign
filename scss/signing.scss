@@ -9,6 +9,12 @@
     .main{
         padding: 30px 15px;
         height: calc(100vh - 160px);
+        @include m {
+            padding: 15px;
+        }
+        @include s {
+            padding: 10px;
+        }
         .block{
             background-color: map-get($color, 'm');
             border-radius: 35px;
@@ -18,16 +24,34 @@
             width: 100%;
             height: 100%;
             .tab{
+                letter-spacing: 5px;
                 font-size: 20px;
                 line-height: 30px;
-                letter-spacing: 5px;
-                height: 50px;
                 padding: 15px;
+                height: 60px;
                 width: 50%;
                 text-align: center;
                 color: map-get($color, 's');
                 border-top-left-radius: 35px;
                 border-top-right-radius: 35px;
+                cursor: pointer;
+                @include m {
+                    letter-spacing: 4px;
+                    font-size: 16px;
+                    line-height: 24px;
+                    padding: 18px;
+                    border-top-left-radius: 25px;
+                    border-top-right-radius: 25px;
+                }
+                @include s {
+                    letter-spacing: 3px;
+                    font-size: 12px;
+                    line-height: 12px;
+                    padding: 9px;
+                    height: 30px;
+                    border-top-left-radius: 15px;
+                    border-top-right-radius: 15px;
+                }
             }
             .tab.active{
                 color: map-get($color, 'p');
@@ -39,11 +63,256 @@
             .tab-right.active{
                 box-shadow: -8px 4px 4px rgba(238, 237, 232, 0.5);
             }
-            .canvas{
+            .upload, .files, .no-file{
                 width: 100%;
                 height: 100%;
                 background-color: map-get($color, 'w');
+                color: map-get($color, 'g-d');
+                height: calc(100% - 60px);
+                @include s {
+                    height: calc(100% - 30px);
+                }
             }
+            .upload{
+                padding: 50px;
+                @include s {
+                    padding: 10px;
+                }
+                .drop-zone{
+                    @include rectangle(100%);
+                    @include flex-j-ac(center, center);
+                    flex-wrap: wrap;
+                    border: 1px dashed map-get($color, 'g-d');
+                    border-radius: 35px;
+                    font-size: 24px;
+                    line-height: 36px;
+                    letter-spacing: 6px;
+                    cursor: pointer;
+                    transition: .3s all ease;
+                    @include m{
+                        font-size: 16px;
+                        line-height: 24px;
+                    }
+                    @include s {
+                        font-size: 12px;
+                        line-height: 16px;
+                    }
+                    &:hover{
+                        background-color: map-get($color, 'm');
+                    }
+                    .text{
+                        display: inline-block;
+                    }
+                    .icon-pdf{
+                        width: 100%;
+                        height: 144px;
+                        margin: 40px 0;
+                        @include m{
+                            margin: 20px 0;
+                        }
+                        @include m{
+                            height: 100px;
+                            margin: 14px 0;
+                        }
+                    }
+                }
+            }
+            .no-file{
+                @include flex-j-ai(center, center);
+                font-size: 24px;
+                line-height: 36px;
+                letter-spacing: 6px;
+                @include m{
+                    font-size: 16px;
+                    line-height: 24px;
+                    letter-spacing: 4px;
+                }
+                @include s {
+                    font-size: 12px;
+                    line-height: 16px;
+                    letter-spacing: 3px;
+                }
+            }
+            .files{
+                display: flex;
+                align-content: flex-start;
+                flex-wrap: wrap;
+                padding: 50px 33px;
+                @include m{
+                    padding: 30px;
+                }
+                @include s{
+                    padding: 10px;
+                }
+                .search{
+                    width: 100%;
+                    height: 60px;
+                    border: 1px solid map-get($color, 'g-d');
+                    border-radius: 30px;
+                    position: relative;
+                    @include m{
+                        height: 50px;
+                    }
+                    @include s{
+                        height: 25px;
+                    }
+
+                    input[name="search"]{
+                        font-size: 20px;
+                        line-height: 24px;
+                        height: 100%;
+                        width: calc(100% - 45px);
+                        outline: none;
+                        border: none;
+                        background-color: transparent;
+                        padding: 18px 30px;
+                        display: block;
+                        // --清除Google叉叉
+                        &::-webkit-search-cancel-button{
+                            display: none;
+                        }
+                         // --清除IE叉叉
+                        &::-ms-clear{
+                            display: none;
+                        }
+                        @include m{
+                            font-size: 16px;
+                            line-height: 20px;
+                            padding: 15px 25px;
+                            width: calc(100% - 36px);
+                        }    
+                        @include s{
+                            font-size: 12px;
+                            line-height: 13px;
+                            padding: 6px 10px;
+                            width: calc(100% - 25px);
+                        }    
+                    }
+                    ::placeholder { /* CSS 3 標準 */
+                        color:#D9D9D9;
+                    }
+                    ::-webkit-input-placeholder { /* Chrome, Safari */
+                        color:#D9D9D9;
+                    }
+                    :-ms-input-placeholder { /* IE 10+ */
+                        color:#D9D9D9;
+                    }
+                    ::-moz-placeholder { /* Firefox 19+ */
+                        color:#D9D9D9;
+                        opacity: 1;
+                    }                      
+                    .icon-search{
+                        @include rectangle(30px);
+                        @include position-t-r(absolute, 50%, 15px);
+                        transform: translateY(-50%);
+                        cursor: pointer;
+                        @include m{
+                            @include rectangle(22px);
+                        }
+                        @include s{
+                            right: 10px;
+                            @include rectangle(9px);
+                        }
+                    }
+                }
+                .text{
+                    font-size: 16px;
+                    line-height: 24px;
+                    letter-spacing: 4px;
+                    margin: 30px 0 25px;
+                    @include m{
+                        font-size: 14px;
+                        line-height: 20px;
+                        letter-spacing: 3.5px;
+                        margin: 15px 0;
+                    }
+                    @include s{
+                        font-size: 12px;
+                        line-height: 15px;
+                        letter-spacing: 3px;
+                        margin: 5px 0;
+                    }
+                }
+                .text-name{
+                    width: 50%;
+                    padding-left: 30px;
+                    @include m{
+                        padding-left: 25px;
+                    }
+                    @include s{
+                        padding-left: 10px;
+                    }
+                }
+                .text-upload-time{
+                    width: 25%;
+                    @include s{
+                        width: 50%;
+                    }
+                }
+                .text-open-time{
+                    width: 25%;
+                    @include s{
+                        display: none;
+                    }
+                }
+                .row{
+                    width: 100%;
+                    display: flex;
+                    border-radius: 30px;
+                    font-size: 20px;
+                    line-height: 60px;
+                    cursor: pointer;
+                    transition: .3s all ease;
+                    &:hover{
+                        background-color: map-get($color, 'g-l');
+                    }
+                    @include l{
+                        font-size: 16px;
+                    }
+                    @include m{
+                        font-size: 14px;
+                        line-height: 50px;
+                    }
+                    @include s{
+                        font-size: 12px;
+                        line-height: 25px;
+                        border-radius: 12px;
+                    }
+                    .name{
+                        width: 50%;
+                        padding-left: 30px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        @include m{
+                            padding-left: 25px;
+                        }
+                        @include s{
+                            padding-left: 10px;
+                        }
+                    }
+                    .upload-time{
+                        width: 25%;
+                        @include s{
+                            width: 50%;
+                        }
+                    }
+                    .open-time{
+                        width: 25%;
+                        @include s{
+                            display: none;
+                        }
+                    }
+                }
+                .row.active{
+                    background-color: map-get($color, 'm');
+                    &:hover{
+                        background-color: map-get($color, 'm');
+                    }
+                }
+            }
+
+            
         }
     }
 }
