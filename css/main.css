@@ -1,0 +1,138 @@
+.sample {
+  transition: 4s all ease;
+  -webkit-transition: 4s all ease;
+  -moz-transition: 4s all ease;
+  -o-transition: 4s all ease;
+  -ms-transition: 4s all ease;
+}
+
+/* common ___________________________________________________*/
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #F9F8F6;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+ul li {
+  list-style: none;
+}
+
+.header, .main {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+/* header ___________________________________________________*/
+#headerApp {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #FFFAF4;
+}
+#headerApp .header {
+  width: 100%;
+  height: 60px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 15px;
+  letter-spacing: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (max-width: 575px) {
+  #headerApp .header {
+    height: 30px;
+  }
+}
+#headerApp .header .left {
+  display: flex;
+  align-items: center;
+}
+#headerApp .header .left .logo {
+  width: 100px;
+  height: 25px;
+}
+@media (max-width: 575px) {
+  #headerApp .header .left .logo {
+    width: 60px;
+    height: 15px;
+  }
+}
+#headerApp .header .left .title {
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: 17px;
+  padding-left: 17px;
+  border-left: 1px solid #4D4C52;
+  color: #4D4C52;
+}
+@media (max-width: 575px) {
+  #headerApp .header .left .title {
+    display: none;
+  }
+}
+#headerApp .header .menu li {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 18px 0 18px 30px;
+  color: #51A8BC;
+  font-size: 16px;
+}
+#headerApp .header .menu .disable {
+  color: #E2E1DD;
+}
+@media (max-width: 575px) {
+  #headerApp .header .menu {
+    display: none;
+  }
+}
+
+#mainApp {
+  max-width: 1920px;
+  margin: 0 auto;
+}
+#mainApp .main {
+  margin-top: 60px;
+  min-height: calc(100vh - 60px);
+}
+@media (max-width: 575px) {
+  #mainApp .main {
+    margin-top: 30px;
+    min-height: calc(100vh - 30px);
+  }
+}
+#mainApp .hasfooter {
+  min-height: calc(100vh - 160px);
+}
+@media (max-width: 575px) {
+  #mainApp .hasfooter {
+    min-height: calc(100vh - 130px);
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  width: 100%;
+  background-color: #FFFAF4;
+}/*# sourceMappingURL=main.css.map */

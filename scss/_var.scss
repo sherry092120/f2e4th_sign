@@ -1,0 +1,39 @@
+﻿// font
+// $fontFamily: 'Noto Sans CJK TC';
+
+$fontSize-title: 24px;
+$fontSize-title2: 20px;
+$fontSize-title3: 16px;
+$fontSize-title4: 14px;
+$fontSize-title5: 12px;
+
+// $fontSize-xl-title: 28px;
+// $fontSize-xl-title2: 5.56vh;
+// $fontSize-xl-title3: 4.07vh;
+// $fontSize-xl-title4: 2.96vh;
+// $fontSize-xl-title5: 2.22vh;
+
+// $fontSize-mobile-title: 20px;
+// $fontSize-mobile-title2: 28px;
+// $fontSize-mobile-title3: 24px;
+// $fontSize-mobile-title4: 20px;
+// $fontSize-mobile-title5: 18px;
+
+
+
+
+
+// color (Primary、Secondary、Tertiary、Grey*3、Light Main、White、Dark)
+// p-l: primary color / light
+// p-d: primary color / dark
+$color:(
+    'p': #F9B471,
+    's': #51A8BC,
+    't': #BDE8F9,
+    'g-l': #F9F8F6,
+    'g-m': #EEEDE8,
+    'g-d': #A5A39C,
+    'm': #FFFAF4,
+    'w': #FFFFFF,
+    'd': #4D4C52,
+);

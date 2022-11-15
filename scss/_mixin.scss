@@ -1,0 +1,179 @@
+﻿@import './_var.scss';
+
+// max-width
+$max-width: 1440px;
+$max-width-xxl: 1200px;
+$max-width-xl: 992px;
+$max-width-l: 768px;
+
+@mixin xxl {
+    @media ( max-width: 1439px ) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media ( max-width: 1199px ) {
+        @content;
+    }
+
+}
+@mixin l {
+    @media ( max-width: 991px ) {
+        @content;
+    }
+}
+
+@mixin m {
+    @media ( max-width: 767px ) {
+        @content;
+    }
+}
+
+@mixin s {
+    @media ( max-width: 575px ) {
+        @content;
+    }
+}
+
+// 矩形___________________________________________________
+@mixin rectangle($width, $height: $width) {
+    width: $width;
+    height: $height;
+}
+
+
+// display: flex___________________________________________________
+@mixin flex-j-ai($justify-content, $align-items) {
+    display: flex;
+    justify-content: $justify-content;
+    align-items: $align-items;
+}
+@mixin flex-j-ac($justify-content, $align-content) {
+    display: flex;
+    justify-content: $justify-content;
+    align-content: $align-content;
+}
+@mixin flex-j($justify: center) {
+    display: flex;
+    justify-content: $justify;
+}
+@mixin flex-ac($align-content: flex-start) {
+    display: flex;
+    align-content: $align-content;
+}
+@mixin flex-ai($align-items: flex-start) {
+    display: flex;
+    align-items: $align-items;
+}
+
+// position (relative、absolute、fixed)___________________________________________________
+@mixin position-t-l($position: relative, $top: 0, $left: 0) {
+    position: $position;
+    top: $top;
+    left: $left;
+}
+@mixin position-t-r($position: relative, $top: 0, $right: 0) {
+    position: $position;
+    top: $top;
+    right: $right;
+}
+@mixin position-b-l($position: relative, $bottom: 0, $left: 0) {
+    position: $position;
+    bottom: $bottom;
+    left: $left;
+}
+@mixin position-b-r($position: relative, $bottom: 0, $right: 0) {
+    position: $position;
+    bottom: $bottom;
+    right: $right;
+}
+@mixin position-center($position: relative) {
+    position: $position;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+@mixin position-center-x($position: relative) {
+    position: $position;
+    left: 50%;
+    transform: translateX(-50%);
+}
+@mixin position-center-y($position: relative) {
+    position: $position;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+// 方便除錯用___________________________________________________
+@mixin border($color:red , $width: 1px) {
+    border: $width solid $color;
+}
+@mixin bg($color:rgb(206, 206, 206)) {
+    background-color: $color;
+}
+
+
+// CSS3跨跨瀏覽器用___________________________________________________
+@mixin prefix($property,$val) {
+    @each $prefix in '' -webkit- -moz- -o- -ms- { 
+        #{$prefix}#{$property}: $val;
+    }
+}
+.sample {
+    @include prefix(transition,4s all ease);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// 切換按鈕___________________________________________________
+// @mixin toggle-btn {
+//     .toggle-btn-block {
+//         padding: 40px 0 35px 0;
+//         margin: 0 auto;
+//         width: 600px;
+//         @extend %flex-center;
+
+//         @include pad {
+//             width: calc( 100% - 20px );
+//         }
+
+//         .toggle-btn {
+//             width: 50%;
+//             font-size: $fontSize-toggle-btn;
+//             line-height: 50px;
+//             box-shadow: $box-shadow;
+//             text-align: center;
+//             background-color: #fff;
+//             cursor: pointer;
+
+//             @include mobile {
+//                 font-size: $fontSize-mobile-toggle-btn;
+//                 line-height: 40px;
+//             }
+//         }
+
+//         .active {
+//             transition: 0.8s all;
+//             background-color: map-get($color, 'btn-toggle-foucs');
+//             color: #fff;
+//         }
+//     }
+// }
+
+// 箭頭圓形外框___________________________________________________
+// @mixin arrow-curcle($width) {
+//     @include square($width);
+//     border: 3px solid #fff;
+//     border-radius: 50%;
+// }

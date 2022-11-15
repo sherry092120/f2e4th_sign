@@ -1,0 +1,81 @@
+@import './_var.scss';
+@import './_mixin.scss';
+
+#mainApp{
+    // background-image: url("../img/banner_1.png"), url("../img/banner_2.png"), url("../img/banner_3.png"), url("../img/banner_5.png"), url("../img/banner_4.png");
+    // background-size:  224px 444px, 
+    //                   1135px, 
+    //                   504px,
+    //                   116px,
+    //                   1550px; 
+    // background-repeat: no-repeat;
+    // background-position:  57px 443px, 
+    //                       0 77px, 
+    //                       528px 837px,
+    //                       1756px 440px,
+    //                       369px 0; 
+    background-image: url("../img/banner.png");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    @include m {
+        background-image: url("../img/banner_m.png");
+    }
+    .main{
+        padding: 220px 120px 50px;
+        @include flex-j(flex-end);
+        @include m{
+            @include flex-j(center);
+            padding: 148px 0 112px;
+        }
+        @include s{
+            padding: 55px 0 82px;
+        }
+        .group{
+            font-size: 24px;
+            line-height: 35px;
+            letter-spacing: 24px;
+            width: 468px;
+            @include m{
+                min-height: calc(100vh - 320px);
+                position: relative;
+            }
+            @include s{
+                min-height: calc(100vh - 167px);
+                width: 196px;
+                font-size: 12px;
+                letter-spacing: 10px;
+                line-height: 15px;
+            }
+            >div{
+                width: 100%;
+                text-align: center;
+            }
+            .text{
+                margin-top: 23px;
+                margin-bottom: 93px;
+                color: #51A8BC;
+                
+                @include s{
+                    margin-top: 10px;
+                    margin-bottom: 0px;
+                }
+                
+            } 
+            .btn{
+                background-color: map-get($color, 'm');
+                color: map-get($color, 'd');
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                line-height: 100px;
+                @include m{
+                    @include position-center-x(absolute);
+                    bottom: 0px;
+                }
+                @include s{
+                    line-height: 42px;
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,121 @@
+@import './_var.scss';
+@import './_mixin.scss';
+
+/* common ___________________________________________________*/
+// @font-face {
+//     font-family: NotoSansCJK;
+//     src: url("../font/NotoSansMonoCJKtc-Regular.otf");
+//   }
+  
+* {
+    box-sizing: border-box;
+    // font-family: 'Noto Sans TC', sans-serif;
+    // font-family: NotoSansCJK;
+}
+body{
+    margin: 0;
+    background-color: map-get($color, 'g-l');
+}
+ul{
+    padding: 0;
+    margin: 0;
+    li{
+        list-style: none;
+    }
+}
+.header, .main{
+    width: 100%;
+    max-width: $max-width;
+    margin: 0 auto;
+}
+img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* header ___________________________________________________*/
+#headerApp{
+    @include position-t-l(fixed);
+    width: 100%;
+    background-color: map-get($color, 'm');
+    // @include border;
+    .header{
+        width: 100%;
+        height: 60px;
+        max-width: $max-width;
+        margin: 0 auto;
+        padding: 0 15px;
+        letter-spacing: 4px;
+        @include flex-j-ai (space-between, center);
+        @include s{
+            height: 30px;
+        }
+        .left{
+            display: flex;
+            align-items: center;
+            .logo{
+                width: 100px;
+                height: 25px;
+                @include s{
+                    width: 60px;
+                    height: 15px;
+                }
+            }
+            .title{
+                font-size: 16px;
+                line-height: 24px;
+                margin-left: 17px;
+                padding-left: 17px;
+                border-left: 1px solid map-get($color, 'd');
+                color: map-get($color, 'd');
+                @include s{
+                    display: none;
+                }
+            }
+        }
+        .menu{
+            li{
+                display: inline-block;
+                vertical-align: middle;
+                margin: 18px 0 18px 30px;
+                // color: map-get($color, 's');
+                color: #51A8BC;
+                font-size: 16px;
+            }
+            .disable{
+                color: #E2E1DD;
+            }
+            @include s{
+                display: none;
+            }
+        }
+    }
+}
+
+#mainApp{
+    max-width: 1920px;
+    margin: 0 auto;
+    .main{
+        margin-top: 60px;
+        min-height: calc(100vh - 60px);
+        @include s{
+            margin-top: 30px;
+            min-height: calc(100vh - 30px);
+        }
+    }
+    .hasfooter{
+        min-height: calc(100vh - 160px);
+        @include s{
+            min-height: calc(100vh - 130px);
+        }
+    }
+}
+
+footer{
+    @include position-b-l(fixed);
+    height: 100px;
+    width: 100%;
+    background-color: map-get($color, 'm');
+}

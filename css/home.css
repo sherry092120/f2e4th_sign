@@ -1,0 +1,91 @@
+.sample {
+  transition: 4s all ease;
+  -webkit-transition: 4s all ease;
+  -moz-transition: 4s all ease;
+  -o-transition: 4s all ease;
+  -ms-transition: 4s all ease;
+}
+
+#mainApp {
+  background-image: url("../img/banner.png");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+@media (max-width: 767px) {
+  #mainApp {
+    background-image: url("../img/banner_m.png");
+  }
+}
+#mainApp .main {
+  padding: 220px 120px 50px;
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 767px) {
+  #mainApp .main {
+    display: flex;
+    justify-content: center;
+    padding: 148px 0 112px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main {
+    padding: 55px 0 82px;
+  }
+}
+#mainApp .main .group {
+  font-size: 24px;
+  line-height: 35px;
+  letter-spacing: 24px;
+  width: 468px;
+}
+@media (max-width: 767px) {
+  #mainApp .main .group {
+    min-height: calc(100vh - 320px);
+    position: relative;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .group {
+    min-height: calc(100vh - 167px);
+    width: 196px;
+    font-size: 12px;
+    letter-spacing: 10px;
+    line-height: 15px;
+  }
+}
+#mainApp .main .group > div {
+  width: 100%;
+  text-align: center;
+}
+#mainApp .main .group .text {
+  margin-top: 23px;
+  margin-bottom: 93px;
+  color: #51A8BC;
+}
+@media (max-width: 575px) {
+  #mainApp .main .group .text {
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+}
+#mainApp .main .group .btn {
+  background-color: #FFFAF4;
+  color: #4D4C52;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  line-height: 100px;
+}
+@media (max-width: 767px) {
+  #mainApp .main .group .btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0px;
+  }
+}
+@media (max-width: 575px) {
+  #mainApp .main .group .btn {
+    line-height: 42px;
+  }
+}/*# sourceMappingURL=home.css.map */
