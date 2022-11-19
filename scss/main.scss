@@ -1,10 +1,10 @@
 @import './_var.scss';
 @import './_mixin.scss';
 
-@font-face {
+// @font-face {
     // font-family: NotoSansCJK;
     // src: url("../font/NotoSansCJKtc-Regular.otf");
-  }
+//   }
   
 /* common ___________________________________________________*/
 * {
@@ -139,7 +139,7 @@ footer{
         width: 80%;
         max-width: 850px;
         min-height: 300px;
-        padding: 20px;
+        padding: 20px 30px;
         border-radius: 35px;
         background-color: #fff;
         color: map-get($color, 'g-d');

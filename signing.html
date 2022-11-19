@@ -13,6 +13,7 @@
     <script src="https://unpkg.com/vue@next"></script>
     <script src='./js/main.js' ></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/1.6.416/pdf.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 
 
 </head>
@@ -69,12 +70,62 @@
                 </div>
                 <div class="aside-group aside-group-bottom">
                     <div class="title">我的簽名<img src="./img/icon-arrow-blue.svg" class="icon-arrow"></div>
-                    <div class="block">創建簽名<img src="./img/icon-pen2.svg"></div>
+                    <template v-if="signArr.length != 0">
+                        <div class="block sign-block" v-for="(item, i) in signArr" @click="clickSign(i, item)">
+                            <img :src="item" class="img-sign">
+                            <img src="./img/icon-close-delete.png" class="icon-delete" @click.stop="deleteSign(i)">
+                        </div>
+                    </template>
+
+                    <div class="block" @click="popSign = true">創建簽名<img src="./img/icon-pen2.svg"></div>
                     <div class="block">上傳圖片<img src="./img/icon-img.svg"></div>
+                    <div class="block" @click="createFile">Save Canvas</div>
                 </div>
             </div>
             <div class="view">
-                <div class="canvas" id="canvas">
+                <div class="canvas" id="canvas" @mousemove="mousemoveFile($event)" @mouseup="mouseupFile($event)">
+                    <div v-show="showBox" 
+                        class="canvas-img" 
+                        @click="clickImg" 
+                        @mousedown.native="mousedownImg($event)" 
+                        @mouseup.native="mouseupImg($event)" 
+                        :style="{top: imgTop, left: imgLeft, border: status == '放開'? '1px solid #A5A39C':'1.5px solid red'}">
+                        <img :src="chooseImg[1]">
+                        <img src="./img/icon-close-delete.png" class="icon-delete" @click.stop="deleteCanvasSign">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div>
+            <div @click="downloadFile">DOWNLOAD</div>
+            <img :src="createImgSrc">
+        </div> -->
+        <div v-show="popSign" class="pop-bg" id="pop-sign">
+            <div class="pop-content">
+                <div class="pop-main">
+                    <div class="title">在框格內簽下大名!</div>
+                    <canvas width="780"
+                            height="300"
+                            class="sign-canvas" 
+                            id="signCanvas"
+                            ref="signCanvas" 
+                            @mousedown="mousedownSign($event)" 
+                            @mouseup="mouseupSign($event)">
+                    </canvas>
+                </div>
+                <div class="pop-bottom">
+                    <div class="left">
+                        <span @click="clearSign">清除</span>
+                        <div class="colors">
+                            <div class="color" @click="signColor = 'black'"></div>
+                            <div class="color color-blue" @click="signColor = 'blue'"></div>
+                            <div class="color color-red" @click="signColor = 'red'"></div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="main-btn main-btn-light" @click="cancelSign">取消</div>
+                        <div class="main-btn main-btn-dark" @click="saveSign">簽好了</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,29 +134,6 @@
     <footer id="footerApp">
 
     </footer>
-
-    <div class="pop-bg" id="pop-sign">
-        <div class="pop-content">
-            <div class="pop-main">
-                <div class="title">在框格內簽下大名!</div>
-                <div class="sign-canvas"></div>
-            </div>
-            <div class="pop-bottom">
-                <div class="left">
-                    <span>清除</span>
-                    <div class="colors">
-                        <div class="color"></div>
-                        <div class="color color-blue"></div>
-                        <div class="color color-red"></div>
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="main-btn main-btn-light">取消</div>
-                    <div class="main-btn main-btn-dark">簽好了</div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         // -----------------------------------------------------
@@ -118,7 +146,20 @@
                     files: [],
                     // files:[['.19898989898989899898989823.pdf','2022/10/31，23:45','---'],['.456.pdf','2022/10/31，23:45','2022/10/31，23:55']],
                     choose: {},
+                    chooseImg: [],
                     canvas: '',
+                    signCanvas: '',
+                    signCanvasGetContext: '',
+                    signColor: 'black',
+                    popSign: false,
+                    signArr: [],
+                    imgLeft: 95,
+                    imgTop: 48.5,
+                    status: '放開',
+                    fileHref: '#',
+                    createImgSrc: '#',
+                    showBox: false,
+                    pageNum: 1,
                 }
             },
             methods:{
@@ -126,36 +167,67 @@
                     this.fileIndex = index;
                     this.choose = this.files[index-1];
                     this.page = 2;
+                    let self = this;
                     PDFJS.getDocument(this.choose.base64).then(function(pdf) {
+
+                        pdf.getPage(self.pageNum).then(function(page) { // you can now use *page* here
+
+                            let scale = 1.4;
+                            let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
+
+                            // 產生canvas
+                            let canvas = document.createElement('canvas');
+                            let context = canvas.getContext('2d');
+                            canvas.id = `canvasFile${self.pageNum-1}`;
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            // console.log(viewport)
+
+                            let renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+
+                            // page.render(): 將PDF內容產生到canvas上
+                            page.render(renderContext);
+
+                            document.getElementById('canvas').appendChild(canvas);
+                        });
             
                         // pdf.numPages: 取得總頁數
                         // pdf.getPage(pageNum): 取得每一個PDF頁面
-                        for (let pageNum = 1; pageNum < pdf.numPages; ++pageNum) {
-                            pdf.getPage(pageNum).then(function(page) { // you can now use *page* here
+                        // for (let pageNum = 1; pageNum < pdf.numPages; ++pageNum) {
+                        //     pdf.getPage(pageNum).then(function(page) { // you can now use *page* here
 
-                                let scale = 1.5;
-                                let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
+                        //         let scale = 1.2;
+                        //         let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
 
 
-                                // 產生canvas
-                                let canvas = document.createElement('canvas');
-                                let context = canvas.getContext('2d');
-                                canvas.height = viewport.height;
-                                canvas.width = viewport.width;
-                                console.log(viewport)
+                        //         // 產生canvas
+                        //         let canvas = document.createElement('canvas');
+                        //         let context = canvas.getContext('2d');
+                        //         canvas.id = `canvasFile${pageNum-1}`;
+                        //         canvas.height = viewport.height;
+                        //         canvas.width = viewport.width;
+                        //         // console.log(viewport)
 
-                                let renderContext = {
-                                    canvasContext: context,
-                                    viewport: viewport
-                                };
+                        //         let renderContext = {
+                        //             canvasContext: context,
+                        //             viewport: viewport
+                        //         };
 
-                                // page.render(): 將PDF內容產生到canvas上
-                                page.render(renderContext);
+                        //         // page.render(): 將PDF內容產生到canvas上
+                        //         page.render(renderContext);
 
-                                document.getElementById('canvas').appendChild(canvas);
-                            });
-                        }
+                        //         document.getElementById('canvas').appendChild(canvas);
+                        //     });
+                        // }
                     })
+                },
+                clickSign(index, src){
+                    this.chooseImg = [index,src];
+                    console.log('chooseImg----',this.chooseImg);
+                    this.showBox = true;
                 },
                 dragoverFile(e){
                     // console.log('dragoverFile-------',e);
@@ -171,10 +243,10 @@
                     
                     for(let i=0; i<files.length; i++){
                         let file = files[i];
-                        console.log(`file[${i}]----`,file)
+                        // console.log(`file[${i}]----`,file)
 
                         this.toBase64(file).then(function(base64){
-                            console.log(base64)
+                            // console.log(base64)
                             let obj = {};
                             obj.name = file.name;
                             obj.uploadtime = uploadTime;
@@ -208,19 +280,191 @@
                             reject(`toBase64失敗`)
                         }
                     })
-                }
+                },
+                mousedownImg($event){
+                    // this.status = '按著';
+                    console.log('按著')
+                    // document.getElementById('signCanvas').addEventListener('mousemove', this.mousemoveSign, false);
+                },
+                mouseupImg($event){
+                    console.log('放開')
+                    // this.status = '放開';
+                },
+                clickImg(){
+                    if(this.status == '放開'){
+                        this.status = '按著'
+                    }else{
+                        this.status = '放開'
+                    }
+                },
+                mouseupFile(event){
+                    let ele = document.getElementById('canvasFile0');
+                    let ctx = ele.getContext('2d'); 
+
+                    let rect = document.getElementById('canvasFile0').getBoundingClientRect();
+                    let x = event.clientX - rect.left;
+                    let y = event.clientY - rect.top;
+
+
+                    // let img = new Image();
+                    // img.src = this.signArr[0];
+                    // img.width = 100;
+                    // img.onload=function(){
+                    //     ctx.drawImage(img,x,y,150,57.7);
+                    // }
+
+                },
+                mousemoveFile(event){
+                    let rect = document.getElementById('canvasFile0').getBoundingClientRect();
+                    let x = event.clientX - rect.left;
+                    let y = event.clientY - rect.top;
+                    console.log(`x,y----${x},${y}`);
+                    if(this.status == "按著"){
+                        this.imgLeft = `${x}px`;
+                        this.imgTop = `${y}px`;
+                    }
+
+                    // return {
+                    //     x: event.clientX - rect.left,
+                    //     y: event.clientY - rect.top
+                    // }; 
+                },
+                getMousePos(event) {
+                    // console.log('getMousePosEvent---',event)
+
+                    let rect = this.$refs.signCanvas.getBoundingClientRect();
+                    // console.log('完整座標資訊rect---',rect)
+                    // console.log('完整座標資訊rect.left---',rect.left)
+                    // console.log('完整座標資訊rect.top---',rect.top)
+                    // console.log('event.clientX',event.clientX)
+                    // console.log('event.clientY',event.clientY)
+                    // console.log('x-------',event.clientX - rect.left)
+                    // console.log('y-------',event.clientY - rect.top)
+                    // getBoundingClientRect 取得物件完整座標資訊，包含寬高等
+
+                    return {
+                        x: event.clientX - rect.left,
+                        y: event.clientY - rect.top
+                    };   
+                    // //這個function將會傳回滑鼠在canvas上的座標
+                },
+                mousedownSign(event){
+                    event.preventDefault();
+
+                    this.signCanvas = this.$refs.signCanvas;
+                    this.signCanvasGetContext = this.signCanvas.getContext('2d'); 
+                    this.signCanvasGetContext.strokeStyle = this.signColor ;
+                    this.signCanvasGetContext.lineWidth = 10;
+
+                    this.signCanvasGetContext.beginPath();
+                    let mousePos = this.getMousePos(event);
+                    this.signCanvasGetContext.moveTo(mousePos.x, mousePos.y);  
+
+                    document.getElementById('signCanvas').addEventListener('mousemove', this.mousemoveSign, false);
+
+                },
+                mouseupSign(event){
+                    document.getElementById('signCanvas').removeEventListener('mousemove', this.mousemoveSign, false);
+                },
+                mousemoveSign(event){
+                    let mousePos = this.getMousePos(event);
+                    this.signCanvasGetContext.lineTo(mousePos.x, mousePos.y);
+                    // console.log(`x,y----${mousePos.x}, ${mousePos.y}`)
+                    this.signCanvasGetContext.stroke();
+                },
+                clearSign(){
+                    this.signCanvasGetContext.clearRect(0, 0, this.$refs.signCanvas.width, this.$refs.signCanvas.height);
+                },
+                cancelSign(){
+                    this.popSign = false;
+                    this.clearSign();
+                },
+                saveSign(){
+                    let signImgSrc = this.signCanvas.toDataURL();
+                    let storageSign = localStorage.getItem('sign');
+                    this.signArr.push(signImgSrc);
+
+                    console.log(this.signArr);
+
+                    if(storageSign == null){
+                        localStorage.setItem('sign', JSON.stringify([signImgSrc]));
+                        console.log('A')
+                    }else{
+                        console.log('B')
+                        localStorage.setItem('sign', JSON.stringify(this.signArr));
+                    }
+                    this.popSign = false;
+                    this.clearSign();
+                },
+                deleteSign(index){
+                    if(this.chooseImg[0] == index){
+                        this.chooseImg = [];
+                        this.showBox = false;
+                        this.imgLeft = '95px';
+                        this.imgTop = '48.5px';
+                    }
+                    this.signArr.splice(index, 1);
+                    localStorage.setItem('sign', JSON.stringify(this.signArr));
+                },
+                deleteCanvasSign(){
+                    this.showBox = false;
+                    this.status = '放開';
+                    this.imgLeft = '95px';
+                    this.imgTop = '48.5px';
+                },
+                createFile(){
+                    let self = this;
+                    let ele = document.getElementById('canvasFile0');
+                    let ctx = ele.getContext('2d'); 
+                    let img = new Image();
+                    img.src = this.signArr[0];
+                    // console.log(parseInt(self.imgLeft))
+                    // console.log(parseInt(self.imgTop))
+                    img.onload = function(){
+                        ctx.drawImage(img, parseInt(self.imgLeft)-75, parseInt(self.imgTop)-28.85, 150, 57.7);
+                    }
+
+                    setTimeout(function(){
+                        // self.page = 3;
+                        let src = ele.toDataURL("image/png");
+                        self.createImgSrc = src;
+
+                    },3000)
+                },
+                downloadFile(){
+                    let self = this;
+                    // 引入套件所提供的物件
+                    const pdf = new jsPDF();
+
+                    // 設定背景在 PDF 中的位置及大小
+                    const width = pdf.internal.pageSize.width;
+                    const height = pdf.internal.pageSize.height;
+                    pdf.addImage(self.createImgSrc, "png", 0, 0, width, height);
+
+                    // 將檔案取名並下載
+                    pdf.save("download.pdf");
+                },
             },
             mounted(){
                 // console.log(this.files)
                 // console.log(localStorage.getItem('files'))
                 let storageFiles = localStorage.getItem('files');
+                let storageSign = localStorage.getItem('sign');
                 if(storageFiles != null){
                     this.files = JSON.parse(storageFiles);
                 }
-                
+                if(storageSign != null){
+                    this.signArr = JSON.parse(storageSign);
+                }
+
+                // this.choosefile(1);
+
+                // console.log('chooseImg----',this.chooseImg)
+
                 // console.log(this.files == false)
                 // let today = new Date();
                 // console.log(`${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}, ${today.getHours()}:${ (today.getMinutes()<10)? `0${today.getMinutes()}`:today.getMinutes() }`);
+
             },
         })
         mainApp.mount('#mainApp');

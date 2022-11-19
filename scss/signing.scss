@@ -328,6 +328,7 @@
             position: absolute;
             left: 0;
             top: 0;
+            overflow: auto;
             @include xxl{
                 width: 360px;
             }
@@ -394,6 +395,19 @@
                     @include flex-j-ai(center, center);
                     img{
                         margin-left: 12px;
+                    }
+                }
+                .sign-block{
+                    // cursor: default;
+                    .img-sign{
+                        margin-left: 0px;
+                        width: calc(100% - 72px);
+                        height: 100%;
+                    }
+                    .icon-delete{
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
                     }
                 }
             }
@@ -469,18 +483,47 @@
             .canvas{
                 width: 77%;
                 margin: 0 auto;
+                // border: 1px solid red;
+                position: relative;
                 @include xxl{
-                    width: 100%;
-                    padding: 0 30px;
+                    width: calc(100% - 50px);
+                    margin: 0 25px;
+                    // padding: 0 30px;
                 }
                 @include l{
-                    padding: 0 20px;
+                    // padding: 0 20px;
                 }
                 @include m{
-                    padding: 0 35px;
+                    // padding: 0 35px;
                 }
                 @include s{
-                    padding: 0 10px;
+                    // padding: 0 10px;
+                }
+                .canvas-img{
+                    position: absolute;
+                    top: 48.5px;
+                    left: 95px;
+                    transform: translate(-50%,-50%);
+                    width: 150px;
+                    height: 57.7px;
+                    border: 1px solid #A5A39C;
+                    background-color: #bde8f934;
+                    cursor: pointer;
+                    &:hover{
+                        background-color: #f9bde934;
+                    }
+                    img{
+                        @include rectangle(100%);
+                        object-fit: contain;
+                    }
+                    .icon-delete{
+                        @include rectangle(20px);
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        transform: translate(-95%,-95%);
+                        cursor: pointer;
+                    }
                 }
             }
         }
@@ -500,7 +543,9 @@
             }
             .sign-canvas{
                 border: 1px dashed map-get($color, 'g-d');
-                min-height: 361px;
+                // min-height: 361px;
+                // width: 100%;
+                // height: 360px;
             }
         }
         .pop-bottom{
