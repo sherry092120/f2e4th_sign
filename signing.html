@@ -12,6 +12,8 @@
     <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300&display=swap" rel="stylesheet"> -->
     <script src="https://unpkg.com/vue@next"></script>
     <script src='./js/main.js' ></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/1.6.416/pdf.js'></script>
+
 
 </head>
 <body>
@@ -30,8 +32,8 @@
     </header>
 
     <main id="mainApp">
-        <div class="main hasfooter">
-            <div class="block">
+        <div v-if="page == 1" class="main hasfooter">
+            <div class="page1-block">
                 <div class="tab tab-left" :class="{'active':tab == 1}" @click="tab = 1">上傳新文件</div>
                 <div class="tab tab-right" :class="{'active':tab == 2}" @click="tab = 2">選擇已上傳文件</div>
                 <div v-if="tab == 1" class="upload" @dragover.stop.prevent="dragoverFile($event)" @drop.stop.prevent="dropFile($event)">
@@ -39,6 +41,7 @@
                         <span class="text">點擊此處上傳 或 直接拖曳檔案</span>
                         <img src="./img/icon_document_pdf.png" class="icon-pdf">
                         <span class="text">(限10MB以下PDF檔)</span>
+                        
                     </div>
                 </div>
                 <div v-if="tab == 2 && files == false" class="no-file">尚未上傳任何文件!</div>
@@ -58,26 +61,79 @@
                 </div>
             </div>
         </div>
+        <div v-if="page == 2" class="main page2 hasfooter">
+            <div class="aside">
+                <div class="aside-group aside-group-top">
+                    <div class="title">文件名稱</div>
+                    <div class="document-name"><span>{{choose.name}}</span><img src="./img/icon_pen.svg"></div>
+                </div>
+                <div class="aside-group aside-group-bottom">
+                    <div class="title">我的簽名<img src="./img/icon-arrow-blue.svg" class="icon-arrow"></div>
+                    <div class="block">創建簽名<img src="./img/icon-pen2.svg"></div>
+                    <div class="block">上傳圖片<img src="./img/icon-img.svg"></div>
+                </div>
+            </div>
+            <div class="view">
+                <div class="canvas" id="canvas">
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer id="footerApp">
 
     </footer>
 
+
     <script>
         // -----------------------------------------------------
         const mainApp = Vue.createApp({
             data(){
                 return{ 
+                    page: 1,
                     tab: 1,
                     fileIndex: '',
                     files: [],
-                    // files:[['.19898989898989899898989823.pdf','2022/10/31，23:45','---'],['.456.pdf','2022/10/31，23:45','2022/10/31，23:55']]
+                    // files:[['.19898989898989899898989823.pdf','2022/10/31，23:45','---'],['.456.pdf','2022/10/31，23:45','2022/10/31，23:55']],
+                    choose: {},
+                    canvas: '',
                 }
             },
             methods:{
                 choosefile(index){
                     this.fileIndex = index;
+                    this.choose = this.files[index-1];
+                    this.page = 2;
+                    PDFJS.getDocument(this.choose.base64).then(function(pdf) {
+            
+                        // pdf.numPages: 取得總頁數
+                        // pdf.getPage(pageNum): 取得每一個PDF頁面
+                        for (let pageNum = 1; pageNum < pdf.numPages; ++pageNum) {
+                            pdf.getPage(pageNum).then(function(page) { // you can now use *page* here
+
+                                let scale = 1.5;
+                                let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
+
+
+                                // 產生canvas
+                                let canvas = document.createElement('canvas');
+                                let context = canvas.getContext('2d');
+                                canvas.height = viewport.height;
+                                canvas.width = viewport.width;
+                                console.log(viewport)
+
+                                let renderContext = {
+                                    canvasContext: context,
+                                    viewport: viewport
+                                };
+
+                                // page.render(): 將PDF內容產生到canvas上
+                                page.render(renderContext);
+
+                                document.getElementById('canvas').appendChild(canvas);
+                            });
+                        }
+                    })
                 },
                 dragoverFile(e){
                     // console.log('dragoverFile-------',e);
@@ -93,28 +149,43 @@
                     
                     for(let i=0; i<files.length; i++){
                         let file = files[i];
-                        let obj = {};
-                        obj.name = file.name;
-                        obj.base64 = "this.toBase64(file)";
-                        obj.uploadtime = uploadTime;
-                        obj.opentime = '---';
-                        self.files.push(obj);
-                    }
-                    console.log('this.files------',this.files);
-                    localStorage.setItem('files', JSON.stringify(this.files));
+                        console.log(`file[${i}]----`,file)
 
+                        this.toBase64(file).then(function(base64){
+                            console.log(base64)
+                            let obj = {};
+                            obj.name = file.name;
+                            obj.uploadtime = uploadTime;
+                            obj.opentime = '---';
+                            obj.base64 = base64;
+                            self.files.push(obj);
+
+                        });
+                    }
+                    // console.log('this.files------',self.files);
+
+                    setTimeout(() => {
+                        localStorage.setItem('files', JSON.stringify(self.files));
+                        // console.log('localStorage---',localStorage.getItem('files'))
+                        self.tab = 2;
+                    }, 1000);
 
                 },
-                toBase64(file){
-                    let result;
-                    let reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function () { // base64格式PDF
-                        return reader.result;
-                    };
-                    reader.onerror = function (error) {
-                        console.log('Error: ', error);
-                    };
+                async toBase64(file, success=true){
+                    return new Promise((resolve, reject) => { // 傳入 resolve 與 reject，表示資料成功與失敗
+                        if (success) {
+                            let reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = function () { // base64格式PDF
+                                resolve(reader.result);
+                            };
+                            reader.onerror = function (error) {
+                                console.log('Error: ', error);
+                            };
+                        } else {
+                            reject(`toBase64失敗`)
+                        }
+                    })
                 }
             },
             mounted(){

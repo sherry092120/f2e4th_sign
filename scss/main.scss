@@ -2,15 +2,15 @@
 @import './_mixin.scss';
 
 @font-face {
-    font-family: NotoSansCJK;
-    src: url("../font/NotoSansCJKtc-Regular.otf");
+    // font-family: NotoSansCJK;
+    // src: url("../font/NotoSansCJKtc-Regular.otf");
   }
   
 /* common ___________________________________________________*/
 * {
     box-sizing: border-box;
     // font-family: 'Noto Sans TC', sans-serif;
-    font-family: NotoSansCJK;
+    // font-family: NotoSansCJK;
 }
 body{
     margin: 0;
