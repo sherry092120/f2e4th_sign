@@ -14,6 +14,8 @@
         }
         @include s {
             padding: 10px;
+            height: calc(100vh - 145px);
+            padding-bottom: 25px;
         }
         .page1-block{
             background-color: map-get($color, 'm');
@@ -110,7 +112,7 @@
                         @include m{
                             margin: 20px 0;
                         }
-                        @include m{
+                        @include s{
                             height: 100px;
                             margin: 14px 0;
                         }
@@ -338,6 +340,7 @@
             @include m{
                 @include rectangle(100%, auto);
                 background-color: transparent;
+                z-index: 1;
             }
             .aside-group{
                 padding: 25px 36px;
@@ -393,6 +396,16 @@
                     border: 1px dashed map-get($color, 'g-d');
                     cursor: pointer;
                     @include flex-j-ai(center, center);
+                    @include m{
+                        width: 328px;
+                        margin: 15px auto;
+                    }
+                    @include s{
+                        width: 250px;
+                        height: 30px;
+                        font-size: 12px;
+                        line-height: 30px;
+                    }
                     img{
                         margin-left: 12px;
                     }
@@ -431,6 +444,10 @@
                     bottom: 100px;
                     left: 0;
                 }
+                @include s{
+                    bottom: 115px;
+                    left: 0;
+                }
                 .title{
                     @include m{
                         @include flex-j-ai(center, center);
@@ -440,24 +457,31 @@
                         height: 50px;
                     }
                     @include s{
-                        display: none;
+                        font-size: 14px;
+                        height: 40px;
+                        padding: 10px 0;
                     }
                     .icon-arrow{
                         display: none;
+                        transition: 0.3s all ease;
                         @include m{
                             display: block;
                             margin-left: 15px;
                             width: 14px;
                         }
                     }
+                    .rotate{
+                        transform: rotate(180deg);
+                    }
                 }
                 .block{
-                    @include m{
-                        height: 0;
-                        overflow: hidden;
-                        margin: 0;
-                        border: 0;
-                    }
+                    transition: 0.5s all ease;
+                }
+                .hidden{
+                    height: 0;
+                    overflow: hidden;
+                    margin: 0 auto;
+                    border: 0;
                 }
             }
         }
@@ -467,6 +491,7 @@
             height: 100%;
             padding: 30px 0;
             overflow: auto;
+            position: relative;
             @include xxl{
                 width: calc(100% - 360px);
             }
@@ -476,9 +501,11 @@
             @include m{
                 width: 100%;
                 padding: 20px 0;
+                height: calc(100% - 50px);
             }
             @include s{
-                padding: 10px 0;
+                padding: 10px 0 20px;
+                height: calc(100% - 55px);
             }
             .canvas{
                 width: 77%;
@@ -494,7 +521,7 @@
                     // padding: 0 20px;
                 }
                 @include m{
-                    // padding: 0 35px;
+                    padding: 50px 35px 0px;
                 }
                 @include s{
                     // padding: 0 10px;
@@ -528,12 +555,44 @@
             }
         }
     }
+    .page3{
+        height: auto;
+        padding-bottom: 130px;
+        img{
+            display: block;
+            width: 85%;
+            max-width: 1170px;
+            margin: 0 auto;
+            object-position: 0 0;
+            @include xl{
+                width: 90%;
+            }
+            @include m{
+                width: 100%;
+            }
+        }
+    }
 
 }
 
 #pop-sign{
+    z-index: 2;
     .pop-content{
-
+        width: 850px;
+        @include xl{
+            width: 760px;
+        }
+        @include l{
+            width: 710px;
+        }
+        @include m{
+            width: 70%;
+            min-width: 540px;
+        }
+        @include s{
+            width: 90%;
+            min-width: 410px;
+        }
         .pop-main{
             .title{
                 text-align: center;
@@ -546,10 +605,32 @@
                 // min-height: 361px;
                 // width: 100%;
                 // height: 360px;
+                @include s{
+                    display: block;
+                    margin: 0 auto;
+                }
             }
         }
         .pop-bottom{
-
+            .left{
+                width: calc(100% - 390px);
+                @include l{
+                    width: calc(100% - 286px);
+                }
+                @include s{
+                    width: calc(100% - 176px);
+                }
+            }
+            .right{
+                width: 390px;
+                @include l{
+                    width: 286px;
+                }
+                @include s{
+                    width: 176px;
+                }
+            }
+            
             .left{
                 @include flex-ai(center);
                 >span{
@@ -565,6 +646,16 @@
                         border: 3px solid #fff;
                         border-radius: 50%;
                         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                        @include m{
+                            width: 30px;
+                            height: 30px;
+                            margin-right: 10px;
+                        }
+                        @include s{
+                            width: 20px;
+                            height: 20px;
+                            margin-right: 12px;
+                        }
                     }
                     .color-blue{
                         background-color: blue;

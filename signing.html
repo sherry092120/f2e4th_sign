@@ -69,17 +69,20 @@
                     <div class="document-name"><span>{{choose.name}}</span><img src="./img/icon_pen.svg"></div>
                 </div>
                 <div class="aside-group aside-group-bottom">
-                    <div class="title">我的簽名<img src="./img/icon-arrow-blue.svg" class="icon-arrow"></div>
+                    <div class="title" @click="asideM">我的簽名<img src="./img/icon-arrow-blue.svg" class="icon-arrow" :class="{'rotate': aside == 'display'}"></div>
                     <template v-if="signArr.length != 0">
-                        <div class="block sign-block" v-for="(item, i) in signArr" @click="clickSign(i, item)">
+                        <div class="block sign-block" 
+                             :class="{'hidden': (aside == 'hidden' && windowWidth < 767)}"
+                             v-for="(item, i) in signArr" 
+                             @click="clickSign(i, item)">
                             <img :src="item" class="img-sign">
                             <img src="./img/icon-close-delete.png" class="icon-delete" @click.stop="deleteSign(i)">
                         </div>
                     </template>
 
-                    <div class="block" @click="popSign = true">創建簽名<img src="./img/icon-pen2.svg"></div>
-                    <div class="block">上傳圖片<img src="./img/icon-img.svg"></div>
-                    <div class="block" @click="createFile">Save Canvas</div>
+                    <div class="block" :class="{'hidden': aside == 'hidden' && windowWidth < 767}" @click="popSign = true">創建簽名<img src="./img/icon-pen2.svg"></div>
+                    <!-- <div class="block">上傳圖片<img src="./img/icon-img.svg"></div> -->
+                    <!-- <div class="block" @click="createFile">Save Canvas</div> -->
                 </div>
             </div>
             <div class="view">
@@ -96,16 +99,15 @@
                 </div>
             </div>
         </div>
-        <!-- <div>
-            <div @click="downloadFile">DOWNLOAD</div>
-            <img :src="createImgSrc">
-        </div> -->
+        <div v-if="page == 3" class="main page3 hasfooter">
+            <img :src="createImgSrc">   
+        </div>
         <div v-show="popSign" class="pop-bg" id="pop-sign">
             <div class="pop-content">
                 <div class="pop-main">
                     <div class="title">在框格內簽下大名!</div>
-                    <canvas width="780"
-                            height="300"
+                    <canvas :width="canvasSignWidth"
+                            :height="canvasSignHeight"
                             class="sign-canvas" 
                             id="signCanvas"
                             ref="signCanvas" 
@@ -134,18 +136,18 @@
             <div class="footer">
                 <div class="progress">
                     <div class="top">
-                        <div class="text" :class="{'active': page == 1, 'used': page == 2}">上傳文件</div>
+                        <div class="text" :class="{'active': page == 1, 'used': page >= 2}">上傳文件</div>
                         <div class="text" :class="{'active': page == 2, 'used': page == 3}">進行簽署</div>
                         <div class="text" :class="{'active': page == 3}">下載文件</div>
                     </div>
                     <div class="bottom">
-                        <div class="circle" v-for="n in 3" :class="{'active': n == page, 'used': page == n+1}"></div>
-                        <div class="line line1" :class="{'used': page == 2}"></div>
+                        <div class="circle" v-for="n in 3" :class="{'active': n == page, 'used': page >= n+1}"></div>
+                        <div class="line line1" :class="{'used': page >= 2}"></div>
                         <div class="line line2" :class="{'used': page == 3}"></div>
                     </div>
                 </div>
                 <div class="btns">
-                    <div class="main-btn footer-btn-light" v-show="page == 3">回首頁</div>
+                    <div class="main-btn footer-btn-light" v-show="page == 3" @click="goIndex">回首頁</div>
                     <div class="main-btn footer-btn-light" @click="clickFooterBtn('btn1')">{{btn1}}</div>
                     <div class="main-btn footer-btn-dark" @click="clickFooterBtn('btn2')">{{btn2}}</div> 
                 </div>
@@ -180,9 +182,24 @@
                     pageNum: 1,
                     btn1: '取消',
                     btn2: '開啟文件',
+                    aside:'hidden',
+                    canvasSignWidth: 780,
+                    canvasSignHeight: 300,
+                    windowWidth: 0,
+                    
                 }
             },
             methods:{
+                asideM(){
+                    if(this.aside == "display"){
+                        this.aside = "hidden";
+                    }else{
+                        this.aside = "display";
+                    }
+                },
+                goIndex(){
+                    window.location.href = "./index.html";
+                },
                 clickFooterBtn(btn){
                     if(btn == 'btn1'){
                         if(this.page == 1){
@@ -190,40 +207,55 @@
                         }else if(this.page == 2){
                             this.page = 1;
                             this.btn2 = "開啟文件";
+                            this.showBox = false;
+                            this.status = '放開';
+                            this.imgLeft = '95px';
+                            this.imgTop = '48.5px';
+                        }else if(this.page == 3){
+                            this.page = 2;
+                            this.btn2 = "創建文件";
+                            this.createPDF();
                         }
                     }
                     if(btn == 'btn2'){
                         if(this.page == 1){
                             if(this.fileIndex !== ""){
-                                let self = this;
-                                PDFJS.getDocument(this.choose.base64).then(function(pdf) {
-                                    pdf.getPage(self.pageNum).then(function(page) { // you can now use *page* here
-                                        let scale = 1.4;
-                                        let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
-                                        // 產生canvas
-                                        let canvas = document.createElement('canvas');
-                                        let context = canvas.getContext('2d');
-                                        canvas.id = `canvasFile${self.pageNum-1}`;
-                                        canvas.height = viewport.height;
-                                        canvas.width = viewport.width;
-                                        // console.log(viewport)
-                                        let renderContext = {
-                                            canvasContext: context,
-                                            viewport: viewport
-                                        };
-                                        // page.render(): 將PDF內容產生到canvas上
-                                        page.render(renderContext);
-                                        
-                                        document.getElementById('canvas').appendChild(canvas);
-                                    });
-                                })
+                                this.createPDF();
                                 this.page = 2;
                                 this.btn2 = "創建文件";
                             }else{
                                 alert("請選擇文件")
                             }
+                        }else if(this.page == 2){
+                            this.createFile();
+                        }else if(this.page == 3){
+                            this.downloadFile();
                         }
                     }
+                },
+                createPDF(){
+                    let self = this;
+                    PDFJS.getDocument(this.choose.base64).then(function(pdf) {
+                        pdf.getPage(self.pageNum).then(function(page) { // you can now use *page* here
+                            let scale = 1.4;
+                            let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
+                            // 產生canvas
+                            let canvas = document.createElement('canvas');
+                            let context = canvas.getContext('2d');
+                            canvas.id = `canvasFile${self.pageNum-1}`;
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            // console.log(viewport)
+                            let renderContext = {
+                                canvasContext: context,
+                                viewport: viewport
+                            };
+                            // page.render(): 將PDF內容產生到canvas上
+                            page.render(renderContext);
+                            
+                            document.getElementById('canvas').appendChild(canvas);
+                        });
+                    })
                 },
                 choosefile(index){
                     this.fileIndex = index;
@@ -431,6 +463,7 @@
                     }
                     this.popSign = false;
                     this.clearSign();
+                    this.aside = 'display';
                 },
                 deleteSign(index){
                     if(this.chooseImg[0] == index){
@@ -461,9 +494,10 @@
                     }
 
                     setTimeout(function(){
-                        // self.page = 3;
                         let src = ele.toDataURL("image/png");
                         self.createImgSrc = src;
+                        self.btn2 = "下載文件";
+                        self.page = 3;
 
                     },3000)
                 },
@@ -480,8 +514,38 @@
                     // 將檔案取名並下載
                     pdf.save("download.pdf");
                 },
+                resizeEvent(){
+                    let width = document.body.clientWidth;
+                    this.windowWidth = width;
+                    if(width >= 1200){
+                        this.canvasSignWidth = 780;
+                        this.canvasSignHeight = 300;
+                    }else if(width < 1200 && width >= 992){
+                        this.canvasSignWidth = 780/780*700;
+                        this.canvasSignHeight = 300/780*700;
+                    }else if(width < 991 && width >= 768){
+                        this.canvasSignWidth = 780/780*650;
+                        this.canvasSignHeight = 300/780*650;
+                    }else if(width < 767 && width >= 576){
+                        this.canvasSignWidth = 780/780*480;
+                        this.canvasSignHeight = 300/780*480;
+                    }else if(width < 575){
+                        this.canvasSignWidth = 780/780*350;
+                        this.canvasSignHeight = 300/780*350;
+                    }
+                }
+            },
+            watch:{
+                popSign:{
+                    handler(bool, old){
+                        if(bool == true){
+                            this.aside = "hidden";
+                        }
+                    }
+                }
             },
             mounted(){
+                let self = this;
                 // console.log(this.files)
                 // console.log(localStorage.getItem('files'))
                 let storageFiles = localStorage.getItem('files');
@@ -500,6 +564,11 @@
                 // console.log(this.files == false)
                 // let today = new Date();
                 // console.log(`${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}, ${today.getHours()}:${ (today.getMinutes()<10)? `0${today.getMinutes()}`:today.getMinutes() }`);
+                this.resizeEvent();
+                window.addEventListener("resize",function(){
+                    self.resizeEvent();
+                })
+
 
             },
         })

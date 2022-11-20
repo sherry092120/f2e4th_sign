@@ -143,17 +143,43 @@ footer {
   width: 100%;
   background-color: #FFFAF4;
 }
+@media (max-width: 575px) {
+  footer {
+    height: 115px;
+  }
+}
 footer .footer {
   height: 100%;
   display: flex;
   align-items: center;
   padding: 0 15px;
 }
+@media (max-width: 575px) {
+  footer .footer {
+    flex-wrap: wrap;
+  }
+}
 footer .footer .progress {
   width: 50%;
 }
+@media (max-width: 575px) {
+  footer .footer .progress {
+    width: 100%;
+    padding: 10px 35px 15px;
+  }
+}
 footer .footer .progress .top, footer .footer .progress .bottom {
   width: 436px;
+}
+@media (max-width: 991px) {
+  footer .footer .progress .top, footer .footer .progress .bottom {
+    width: 269px;
+  }
+}
+@media (max-width: 575px) {
+  footer .footer .progress .top, footer .footer .progress .bottom {
+    width: 100%;
+  }
 }
 footer .footer .progress .top {
   display: flex;
@@ -164,6 +190,18 @@ footer .footer .progress .top .text {
   font-size: 16px;
   line-height: 24px;
   color: #A5A39C;
+}
+@media (max-width: 991px) {
+  footer .footer .progress .top .text {
+    font-size: 14px;
+    line-height: 21px;
+  }
+}
+@media (max-width: 575px) {
+  footer .footer .progress .top .text {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }
 footer .footer .progress .top .active {
   color: #F9B471;
@@ -212,6 +250,11 @@ footer .footer .progress .bottom .line.used {
 footer .footer .progress .bottom .line1 {
   left: 26px;
 }
+@media (max-width: 991px) {
+  footer .footer .progress .bottom .line1 {
+    left: 24px;
+  }
+}
 footer .footer .progress .bottom .line2 {
   left: 50%;
 }
@@ -219,6 +262,13 @@ footer .footer .btns {
   width: 50%;
   display: flex;
   justify-content: flex-end;
+}
+@media (max-width: 575px) {
+  footer .footer .btns {
+    width: 100%;
+    border-top: 1px solid #EEEDE8;
+    padding: 8px 0 10px;
+  }
 }
 footer .footer .btns .footer-btn-light {
   background-color: #FFFFFF;
@@ -282,6 +332,22 @@ footer .footer .btns .footer-btn-disable {
   width: 180px;
   text-align: center;
   cursor: pointer;
+}
+@media (max-width: 991px) {
+  .main-btn {
+    font-size: 16px;
+    line-height: 50px;
+    margin-left: 13px;
+    width: 130px;
+  }
+}
+@media (max-width: 575px) {
+  .main-btn {
+    font-size: 12px;
+    line-height: 30px;
+    margin-left: 8px;
+    width: 80px;
+  }
 }
 
 .main-btn-light {

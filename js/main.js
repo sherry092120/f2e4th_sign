@@ -15,6 +15,7 @@ window.addEventListener('load',function(){
             let title = window.location.pathname;
             if(title == '/signing.html'){
                 this.title = '簽署新文件';
+                this.menu = [['邀請他人簽署','disable','#'],['登入','','#']];
             }
         },
     })
