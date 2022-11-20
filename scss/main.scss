@@ -1,16 +1,16 @@
 @import './_var.scss';
 @import './_mixin.scss';
 
-// @font-face {
-    // font-family: NotoSansCJK;
-    // src: url("../font/NotoSansCJKtc-Regular.otf");
-//   }
+@font-face {
+    font-family: NotoSansCJK;
+    src: url("../font/NotoSansCJKtc-Regular.otf");
+  }
   
 /* common ___________________________________________________*/
 * {
     box-sizing: border-box;
     // font-family: 'Noto Sans TC', sans-serif;
-    // font-family: NotoSansCJK;
+    font-family: NotoSansCJK;
 }
 body{
     margin: 0;
@@ -23,7 +23,7 @@ ul{
         list-style: none;
     }
 }
-.header, .main{
+.header, .main, .footer{
     width: 100%;
     max-width: $max-width;
     margin: 0 auto;
@@ -121,6 +121,93 @@ footer{
     height: 100px;
     width: 100%;
     background-color: map-get($color, 'm');
+    .footer{
+        height: 100%;
+        @include flex-ai(center);
+        padding: 0 15px;
+        .progress{
+            width: 50%;
+            .top, .bottom{
+                width: 436px;
+            }
+            .top{
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 5px;
+                .text{
+                    font-size: 16px;
+                    line-height: 24px;
+                    color: map-get($color, 'g-d');
+                }
+                .active{
+                    color: map-get($color, 'p');
+                }
+                .used{
+                    color: map-get($color, 's');
+                }
+            }
+            .bottom{
+                position: relative;
+                padding: 0 26px;
+                display: flex;
+                justify-content: space-between;
+                .circle{
+                    background-color: map-get($color, 'w');
+                    border: 3px solid map-get($color, 'w');
+                    box-shadow: 0px 4px 4px #EEEDE8;
+                    border-radius: 50%;
+                    @include rectangle(22px);
+                    position: relative;
+                    z-index: 1;
+                }
+                .circle.active{
+                    background-color: map-get($color, 'p');
+                }
+                .circle.used{
+                    background-color: map-get($color, 's');
+                }
+                .line{
+                    width: calc(50% - 26px);
+                    height: 9px;
+                    border: 3px solid map-get($color, 'w');
+                    background-color: map-get($color, 'w');
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    box-shadow: 0px 4px 4px #EEEDE8;
+                }
+                .line.active{
+                    background-color: map-get($color, 'p');
+                }
+                .line.used{
+                    background-color: map-get($color, 's');
+                }
+                .line1{
+                    left: 26px;
+                }
+                .line2{
+                    left: 50%;
+                }
+            }
+        }
+        .btns{
+            width: 50%;
+            display: flex;
+            justify-content: flex-end;
+            .footer-btn-light{
+                background-color: map-get($color, 'w');
+                color: map-get($color, 's');
+            }
+            .footer-btn-dark{
+                background-color: map-get($color, 's');
+                color: map-get($color, 'w');
+            }
+            .footer-btn-disable{
+                background-color: map-get($color, 'g-m');
+                color: map-get($color, 'w');
+            }
+        }
+    }
 }
 
 .pop-bg{
@@ -171,6 +258,7 @@ footer{
     margin-left: 15px;
     width: 180px;
     text-align: center;
+    cursor: pointer;
 }
 .main-btn-light{
     background-color: map-get($color, 'm');

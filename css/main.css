@@ -6,9 +6,14 @@
   -ms-transition: 4s all ease;
 }
 
+@font-face {
+  font-family: NotoSansCJK;
+  src: url("../font/NotoSansCJKtc-Regular.otf");
+}
 /* common ___________________________________________________*/
 * {
   box-sizing: border-box;
+  font-family: NotoSansCJK;
 }
 
 body {
@@ -24,7 +29,7 @@ ul li {
   list-style: none;
 }
 
-.header, .main {
+.header, .main, .footer {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
@@ -138,6 +143,95 @@ footer {
   width: 100%;
   background-color: #FFFAF4;
 }
+footer .footer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+footer .footer .progress {
+  width: 50%;
+}
+footer .footer .progress .top, footer .footer .progress .bottom {
+  width: 436px;
+}
+footer .footer .progress .top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+footer .footer .progress .top .text {
+  font-size: 16px;
+  line-height: 24px;
+  color: #A5A39C;
+}
+footer .footer .progress .top .active {
+  color: #F9B471;
+}
+footer .footer .progress .top .used {
+  color: #51A8BC;
+}
+footer .footer .progress .bottom {
+  position: relative;
+  padding: 0 26px;
+  display: flex;
+  justify-content: space-between;
+}
+footer .footer .progress .bottom .circle {
+  background-color: #FFFFFF;
+  border: 3px solid #FFFFFF;
+  box-shadow: 0px 4px 4px #EEEDE8;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  z-index: 1;
+}
+footer .footer .progress .bottom .circle.active {
+  background-color: #F9B471;
+}
+footer .footer .progress .bottom .circle.used {
+  background-color: #51A8BC;
+}
+footer .footer .progress .bottom .line {
+  width: calc(50% - 26px);
+  height: 9px;
+  border: 3px solid #FFFFFF;
+  background-color: #FFFFFF;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0px 4px 4px #EEEDE8;
+}
+footer .footer .progress .bottom .line.active {
+  background-color: #F9B471;
+}
+footer .footer .progress .bottom .line.used {
+  background-color: #51A8BC;
+}
+footer .footer .progress .bottom .line1 {
+  left: 26px;
+}
+footer .footer .progress .bottom .line2 {
+  left: 50%;
+}
+footer .footer .btns {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+footer .footer .btns .footer-btn-light {
+  background-color: #FFFFFF;
+  color: #51A8BC;
+}
+footer .footer .btns .footer-btn-dark {
+  background-color: #51A8BC;
+  color: #FFFFFF;
+}
+footer .footer .btns .footer-btn-disable {
+  background-color: #EEEDE8;
+  color: #FFFFFF;
+}
 
 .pop-bg {
   position: fixed;
@@ -187,6 +281,7 @@ footer {
   margin-left: 15px;
   width: 180px;
   text-align: center;
+  cursor: pointer;
 }
 
 .main-btn-light {

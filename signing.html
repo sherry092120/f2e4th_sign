@@ -129,11 +129,29 @@
                 </div>
             </div>
         </div>
+
+        <footer>
+            <div class="footer">
+                <div class="progress">
+                    <div class="top">
+                        <div class="text" :class="{'active': page == 1, 'used': page == 2}">上傳文件</div>
+                        <div class="text" :class="{'active': page == 2, 'used': page == 3}">進行簽署</div>
+                        <div class="text" :class="{'active': page == 3}">下載文件</div>
+                    </div>
+                    <div class="bottom">
+                        <div class="circle" v-for="n in 3" :class="{'active': n == page, 'used': page == n+1}"></div>
+                        <div class="line line1" :class="{'used': page == 2}"></div>
+                        <div class="line line2" :class="{'used': page == 3}"></div>
+                    </div>
+                </div>
+                <div class="btns">
+                    <div class="main-btn footer-btn-light" v-show="page == 3">回首頁</div>
+                    <div class="main-btn footer-btn-light" @click="clickFooterBtn('btn1')">{{btn1}}</div>
+                    <div class="main-btn footer-btn-dark" @click="clickFooterBtn('btn2')">{{btn2}}</div> 
+                </div>
+            </div>
+        </footer>
     </main>
-
-    <footer id="footerApp">
-
-    </footer>
 
     <script>
         // -----------------------------------------------------
@@ -160,40 +178,58 @@
                     createImgSrc: '#',
                     showBox: false,
                     pageNum: 1,
+                    btn1: '取消',
+                    btn2: '開啟文件',
                 }
             },
             methods:{
+                clickFooterBtn(btn){
+                    if(btn == 'btn1'){
+                        if(this.page == 1){
+                            window.location.href = "./index.html";
+                        }else if(this.page == 2){
+                            this.page = 1;
+                            this.btn2 = "開啟文件";
+                        }
+                    }
+                    if(btn == 'btn2'){
+                        if(this.page == 1){
+                            if(this.fileIndex !== ""){
+                                let self = this;
+                                PDFJS.getDocument(this.choose.base64).then(function(pdf) {
+                                    pdf.getPage(self.pageNum).then(function(page) { // you can now use *page* here
+                                        let scale = 1.4;
+                                        let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
+                                        // 產生canvas
+                                        let canvas = document.createElement('canvas');
+                                        let context = canvas.getContext('2d');
+                                        canvas.id = `canvasFile${self.pageNum-1}`;
+                                        canvas.height = viewport.height;
+                                        canvas.width = viewport.width;
+                                        // console.log(viewport)
+                                        let renderContext = {
+                                            canvasContext: context,
+                                            viewport: viewport
+                                        };
+                                        // page.render(): 將PDF內容產生到canvas上
+                                        page.render(renderContext);
+                                        
+                                        document.getElementById('canvas').appendChild(canvas);
+                                    });
+                                })
+                                this.page = 2;
+                                this.btn2 = "創建文件";
+                            }else{
+                                alert("請選擇文件")
+                            }
+                        }
+                    }
+                },
                 choosefile(index){
                     this.fileIndex = index;
                     this.choose = this.files[index-1];
-                    this.page = 2;
-                    let self = this;
-                    PDFJS.getDocument(this.choose.base64).then(function(pdf) {
-
-                        pdf.getPage(self.pageNum).then(function(page) { // you can now use *page* here
-
-                            let scale = 1.4;
-                            let viewport = page.getViewport(scale); // getViewport(scale) scale: 0~1之間 (1: 100%顯示)
-
-                            // 產生canvas
-                            let canvas = document.createElement('canvas');
-                            let context = canvas.getContext('2d');
-                            canvas.id = `canvasFile${self.pageNum-1}`;
-                            canvas.height = viewport.height;
-                            canvas.width = viewport.width;
-                            // console.log(viewport)
-
-                            let renderContext = {
-                                canvasContext: context,
-                                viewport: viewport
-                            };
-
-                            // page.render(): 將PDF內容產生到canvas上
-                            page.render(renderContext);
-
-                            document.getElementById('canvas').appendChild(canvas);
-                        });
-            
+                    // let self = this;
+                    // PDFJS.getDocument(this.choose.base64).then(function(pdf) {
                         // pdf.numPages: 取得總頁數
                         // pdf.getPage(pageNum): 取得每一個PDF頁面
                         // for (let pageNum = 1; pageNum < pdf.numPages; ++pageNum) {
@@ -222,7 +258,7 @@
                         //         document.getElementById('canvas').appendChild(canvas);
                         //     });
                         // }
-                    })
+                    // })
                 },
                 clickSign(index, src){
                     this.chooseImg = [index,src];
@@ -417,7 +453,7 @@
                     let ele = document.getElementById('canvasFile0');
                     let ctx = ele.getContext('2d'); 
                     let img = new Image();
-                    img.src = this.signArr[0];
+                    img.src = this.chooseImg[1];
                     // console.log(parseInt(self.imgLeft))
                     // console.log(parseInt(self.imgTop))
                     img.onload = function(){
@@ -470,21 +506,21 @@
         mainApp.mount('#mainApp');
 
         // -----------------------------------------------------
-        const footerApp = Vue.createApp({
-            data(){
-                return{ 
-                    name: '123',
+        // const footerApp = Vue.createApp({
+        //     data(){
+        //         return{ 
+        //             name: '123',
                 
-                }
-            },
-            methods:{
+        //         }
+        //     },
+        //     methods:{
                 
-            },
-            mounted(){
+        //     },
+        //     mounted(){
                 
-            },
-        })
-        footerApp.mount('#footerApp');
+        //     },
+        // })
+        // footerApp.mount('#footerApp');
 
     </script>
 </body>
