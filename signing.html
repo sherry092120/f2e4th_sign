@@ -112,8 +112,8 @@
                             class="sign-canvas" 
                             id="signCanvas"
                             ref="signCanvas" 
-                            @touchstart="mouseupSign($event)"
-                            @touchend="mousedownSign($event)"
+                            @touchstart="mouseupSign($event,'touch')"
+                            @touchend="mousedownSign($event,'touch')"
                             @mousedown="mousedownSign($event)" 
                             @mouseup="mouseupSign($event)">
                     </canvas>
@@ -418,7 +418,7 @@
                     //     y: event.clientY - rect.top
                     // }; 
                 },
-                getMousePos(event) {
+                getMousePos(event,action="mouse") {
                     // console.log('getMousePosEvent---',event)
 
                     let rect = this.$refs.signCanvas.getBoundingClientRect();
@@ -430,14 +430,20 @@
                     // console.log('x-------',event.clientX - rect.left)
                     // console.log('y-------',event.clientY - rect.top)
                     // getBoundingClientRect 取得物件完整座標資訊，包含寬高等
-
-                    return {
-                        x: event.clientX - rect.left,
-                        y: event.clientY - rect.top
-                    };   
+                    if(action == "mouse"){
+                        return {
+                            x: event.clientX - rect.left,
+                            y: event.clientY - rect.top
+                        };  
+                    }else if(action == "touch"){
+                        return {
+                            x: event.touchs[0].clientX - rect.left,
+                            y: event.touchs[0].clientY - rect.top
+                        };  
+                    } 
                     // //這個function將會傳回滑鼠在canvas上的座標
                 },
-                mousedownSign(event){
+                mousedownSign(event,action="mouse"){
                     event.preventDefault();
 
                     this.signCanvas = this.$refs.signCanvas;
@@ -446,16 +452,16 @@
                     this.signCanvasGetContext.lineWidth = 10;
 
                     this.signCanvasGetContext.beginPath();
-                    let mousePos = this.getMousePos(event);
+                    let mousePos = this.getMousePos(event,action);
                     this.signCanvasGetContext.moveTo(mousePos.x, mousePos.y);  
 
                     document.getElementById('signCanvas').addEventListener('mousemove', this.mousemoveSign, false);
-                    document.getElementById('signCanvas').addEventListener('touchmove', this.mousemoveSign, false);
+                    document.getElementById('signCanvas').addEventListener('touchmove', this.mousemoveSign('touch'), false);
 
                 },
-                mouseupSign(event){
+                mouseupSign(event,action="mouse"){
                     document.getElementById('signCanvas').removeEventListener('mousemove', this.mousemoveSign, false);
-                    document.getElementById('signCanvas').removeEventListener('touchmove', this.mousemoveSign, false);
+                    document.getElementById('signCanvas').removeEventListener('touchmove', this.mousemoveSign('touch'), false);
                 },
                 mousemoveSign(event){
                     let mousePos = this.getMousePos(event);
