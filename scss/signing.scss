@@ -102,6 +102,9 @@
                     &:hover{
                         background-color: map-get($color, 'm');
                     }
+                    input{
+                        display: none;
+                    }
                     .text{
                         display: inline-block;
                     }
@@ -109,6 +112,7 @@
                         width: 100%;
                         height: 144px;
                         margin: 40px 0;
+                        pointer-events: none;
                         @include m{
                             margin: 20px 0;
                         }

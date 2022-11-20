@@ -38,12 +38,12 @@
                 <div class="tab tab-left" :class="{'active':tab == 1}" @click="tab = 1">上傳新文件</div>
                 <div class="tab tab-right" :class="{'active':tab == 2}" @click="tab = 2">選擇已上傳文件</div>
                 <div v-if="tab == 1" class="upload" @dragover.stop.prevent="dragoverFile($event)" @drop.stop.prevent="dropFile($event)">
-                    <div class="drop-zone">
+                    <label class="drop-zone" for="inputFile">
+                        <input type="file" accept=".pdf" id="inputFile" @change="uploadFile($event)">
                         <span class="text">點擊此處上傳 或 直接拖曳檔案</span>
                         <img src="./img/icon_document_pdf.png" class="icon-pdf">
                         <span class="text">(限10MB以下PDF檔)</span>
-                        
-                    </div>
+                    </label>
                 </div>
                 <div v-if="tab == 2 && files == false" class="no-file">尚未上傳任何文件!</div>
                 <div v-if="tab == 2 && files != false" class="files">
@@ -197,6 +197,11 @@
                         this.aside = "display";
                     }
                 },
+                uploadFile(e){
+                    console.log(e.srcElement.files);
+                    this.pushList(e.srcElement.files);
+
+                },
                 goIndex(){
                     window.location.href = "./index.html";
                 },
@@ -303,12 +308,26 @@
                 dropFile(e){
                     let self = this;
                     // console.log('dropFile------',e);
-                    let today = new Date();
-                    let uploadTime = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}，${today.getHours()}:${ (today.getMinutes()<10)? `0${today.getMinutes()}`:today.getMinutes() }`;
-                    // console.log(`${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}, ${today.getHours()}:${today.getMinutes()}`);
                     let files = e.dataTransfer.files; //由DataTransfer物件的files屬性取得檔案物件
                     // console.log('e.dataTransfer.files------',files);
                     
+                    if(files.length >1){
+                        alert('一次僅能上傳一個檔案'); //之後改為可多個檔案上傳
+                    }else{
+                        let testName = files[0].name;
+                        if(testName.indexOf('.pdf') != -1){
+                            self.pushList(files);
+                        }else{
+                            alert('請上傳pdf檔案!');
+                        }
+                    }
+
+                },
+                pushList(files){
+                    let today = new Date();
+                    let uploadTime = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}，${today.getHours()}:${ (today.getMinutes()<10)? `0${today.getMinutes()}`:today.getMinutes() }`;
+                    // console.log(`${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}, ${today.getHours()}:${today.getMinutes()}`);
+                    let self = this;
                     for(let i=0; i<files.length; i++){
                         let file = files[i];
                         // console.log(`file[${i}]----`,file)
@@ -331,7 +350,6 @@
                         // console.log('localStorage---',localStorage.getItem('files'))
                         self.tab = 2;
                     }, 1000);
-
                 },
                 async toBase64(file, success=true){
                     return new Promise((resolve, reject) => { // 傳入 resolve 與 reject，表示資料成功與失敗

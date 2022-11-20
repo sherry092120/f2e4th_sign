@@ -133,6 +133,9 @@
 #mainApp .main .page1-block .upload .drop-zone:hover {
   background-color: #FFFAF4;
 }
+#mainApp .main .page1-block .upload .drop-zone input {
+  display: none;
+}
 #mainApp .main .page1-block .upload .drop-zone .text {
   display: inline-block;
 }
@@ -140,6 +143,7 @@
   width: 100%;
   height: 144px;
   margin: 40px 0;
+  pointer-events: none;
 }
 @media (max-width: 767px) {
   #mainApp .main .page1-block .upload .drop-zone .icon-pdf {
