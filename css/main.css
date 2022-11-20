@@ -108,8 +108,11 @@ img {
   cursor: default;
 }
 @media (max-width: 575px) {
-  #headerApp .header .menu {
-    display: none;
+  #headerApp .header .menu li {
+    font-size: 12px;
+    letter-spacing: 3px;
+    line-height: 30px;
+    margin: 0 0 0 12px;
   }
 }
 

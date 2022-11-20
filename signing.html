@@ -39,7 +39,7 @@
                 <div class="tab tab-right" :class="{'active':tab == 2}" @click="tab = 2">選擇已上傳文件</div>
                 <div v-if="tab == 1" class="upload" @dragover.stop.prevent="dragoverFile($event)" @drop.stop.prevent="dropFile($event)">
                     <label class="drop-zone" for="inputFile">
-                        <input type="file" accept=".pdf" id="inputFile" @change="uploadFile($event)">
+                        <input type="file" accept=".pdf" id="inputFile" style="display: none;" @change="uploadFile($event)">
                         <span class="text">點擊此處上傳 或 直接拖曳檔案</span>
                         <img src="./img/icon_document_pdf.png" class="icon-pdf">
                         <span class="text">(限10MB以下PDF檔)</span>
