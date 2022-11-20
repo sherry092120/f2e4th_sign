@@ -515,11 +515,11 @@
             }
             @include m{
                 width: 100%;
-                padding: 20px 0;
+                padding: 70px 0 20px;
                 height: calc(100% - 50px);
             }
             @include s{
-                padding: 10px 0 20px;
+                padding: 50px 0 20px;
                 height: calc(100% - 55px);
             }
             .canvas{
@@ -536,7 +536,7 @@
                     // padding: 0 20px;
                 }
                 @include m{
-                    padding: 50px 35px 0px;
+                    // padding: 50px 35px 0px;
                 }
                 @include s{
                     // padding: 0 10px;
