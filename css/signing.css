@@ -183,6 +183,7 @@
   align-content: flex-start;
   flex-wrap: wrap;
   padding: 50px 33px;
+  position: relative;
 }
 @media (max-width: 767px) {
   #mainApp .main .page1-block .files {
@@ -193,6 +194,16 @@
   #mainApp .main .page1-block .files {
     padding: 10px;
   }
+}
+#mainApp .main .page1-block .files .clear-list {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #FFFAF4;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 #mainApp .main .page1-block .files .search {
   width: 100%;

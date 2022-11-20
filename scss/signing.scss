@@ -144,11 +144,22 @@
                 align-content: flex-start;
                 flex-wrap: wrap;
                 padding: 50px 33px;
+                position: relative;
                 @include m{
                     padding: 30px;
                 }
                 @include s{
                     padding: 10px;
+                }
+                .clear-list{
+                    position: absolute;
+                    bottom: 20px;
+                    right: 20px;
+                    background-color: map-get($color, 'm');
+                    font-size: 14px;
+                    padding: 5px 10px;
+                    border-radius: 10px;
+                    cursor: pointer;
                 }
                 .search{
                     width: 100%;

@@ -51,6 +51,7 @@
                         <input type="search" name="search" placeholder="搜尋文件名稱">
                         <img src="./img/icon_search.svg" class="icon-search">
                     </div>
+                    <div class="clear-list" @click="clearList">清除所有文件</div>
                     <div class="text text-name">名稱</div>
                     <div class="text text-upload-time">上傳時間</div>
                     <div class="text text-open-time">上次開啟</div>
@@ -111,6 +112,8 @@
                             class="sign-canvas" 
                             id="signCanvas"
                             ref="signCanvas" 
+                            @touchstart="mouseupSign($event)"
+                            @touchend="mousedownSign($event)"
                             @mousedown="mousedownSign($event)" 
                             @mouseup="mouseupSign($event)">
                     </canvas>
@@ -447,10 +450,12 @@
                     this.signCanvasGetContext.moveTo(mousePos.x, mousePos.y);  
 
                     document.getElementById('signCanvas').addEventListener('mousemove', this.mousemoveSign, false);
+                    document.getElementById('signCanvas').addEventListener('touchmove', this.mousemoveSign, false);
 
                 },
                 mouseupSign(event){
                     document.getElementById('signCanvas').removeEventListener('mousemove', this.mousemoveSign, false);
+                    document.getElementById('signCanvas').removeEventListener('touchmove', this.mousemoveSign, false);
                 },
                 mousemoveSign(event){
                     let mousePos = this.getMousePos(event);
@@ -531,6 +536,11 @@
 
                     // 將檔案取名並下載
                     pdf.save("download.pdf");
+                },
+                clearList(){
+                    this.files = [];
+                    localStorage.setItem('files', JSON.stringify(this.files));
+                    
                 },
                 resizeEvent(){
                     let width = document.body.clientWidth;
